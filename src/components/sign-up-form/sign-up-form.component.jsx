@@ -40,17 +40,19 @@ const SignUpForm = (props) => {
 
     return (
         <div className='sign-up-container'>
-            <h2>Don't have an account?</h2>
-            <p>Sign In with your email and password</p>
+            <h2>I don't have an account</h2>
+            <div>Sign un with your email and password</div>
             <form onSubmit={handleSubmit}>
-                <FormInput label='Display Name' required type='text' name='displayName' value={displayName} onChange={handleChange} />
-                <FormInput label='Email' required type='email' name='email' value={email} onChange={handleChange} />
-                <FormInput label='Password' required type='password' name='password' value={password} onChange={handleChange} />
-                <FormInput label='Confirm Password' required type='password' name='confirmPassword' value={confirmPassword} onChange={handleChange} />
-              
-                <Button buttonType='' type="submit">Sign Up</Button>
+                <FormInput label='Display Name' required type='text' name='displayName'
+                    value={displayName} onChange={handleChange} />
+                <FormInput label='Email' required type='email' name='email'
+                    value={email} onChange={handleChange} />
+                <FormInput label='Password' required type='password' name='password'
+                    value={password} onChange={handleChange} />
+                <FormInput label='Confirm Password' required type='password' name='confirmPassword'
+                    value={confirmPassword} onChange={handleChange} />
+                <Button buttonType='' type="submit">SIGN UP</Button>
             </form>
-
         </div>
     );
 };
