@@ -9,8 +9,8 @@ const Navigation = () => {
     
     const { currentUser, setCurrentUser } = useContext(UserContext);
 
-    const signOuthandler = () => {
-        signOutUser();
+    const signOuthandler = async () => {
+        await signOutUser();
         setCurrentUser(null);
     };
 
