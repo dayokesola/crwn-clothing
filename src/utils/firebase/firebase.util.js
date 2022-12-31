@@ -1,14 +1,26 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, 
+import { 
+    getAuth, 
     signInWithRedirect, 
     signInWithPopup, 
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     signOut,
-    onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+    onAuthStateChanged 
+} from 'firebase/auth';
+
+import { 
+    getFirestore, 
+    doc, 
+    getDoc, 
+    setDoc, 
+    collection, 
+    writeBatch, 
+    getDocs,
+    query
+} from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBN-pekLt_f2bjk2DDyz9Mhkab8t67Lfog",
@@ -37,6 +49,33 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach(element => {
+        const docref = doc(collectionRef, element.title.toLowerCase());
+        batch.set(docref, element);
+    });
+
+    await batch.commit();
+    console.log("Batch: " + collectionKey + " ..done");
+};
+
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, "categories");
+    const q = query(collectionRef);
+
+    const querySnapshot = await getDocs(q);
+    const categoryMap = querySnapshot.docs.reduce((accumulator, docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        accumulator[title.toLowerCase()] =  items;
+        return accumulator;
+    }, {});
+    return categoryMap;
+};
+
 export const createUserDocumentFromAuth = async (userAuth, addedInfo ={}) => {
     const userDocRef = doc(db, 'users', userAuth.uid);
     console.log(userDocRef);
@@ -69,19 +108,19 @@ export const createUserDocumentFromAuth = async (userAuth, addedInfo ={}) => {
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
     if(!email || !password) return; 
     return await createUserWithEmailAndPassword(auth, email, password);
-}
+};
 
 
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     if(!email || !password) return; 
     return await signInWithEmailAndPassword(auth, email, password);
-}
+};
 
 
 export const signOutUser = async () => {
     return await signOut(auth); 
-}
+};
 
 export const onAuthStateChangedListener = (callback) => { 
     onAuthStateChanged(auth, callback);
-}
+};
