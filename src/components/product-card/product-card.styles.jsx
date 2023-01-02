@@ -32,10 +32,7 @@ export const ProductCardContainer = styled.div`
       opacity: 0.85;
       display: flex;
     }
-  } width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  } 
 `;
 
 export const Footer = styled.div`
