@@ -1,7 +1,7 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Fragment, useContext } from 'react';
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
-import './navigation.styles.scss';
+import { NavigationContainer, LogoContainer, NavLink, NavLinks } from './navigation.styles';
 
 import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
@@ -11,7 +11,7 @@ import { signOutUser } from '../../utils/firebase/firebase.util';
 
 const Navigation = () => {
     const { currentUser, setCurrentUser } = useContext(UserContext);
-    const { isCartOpen, setIsCartOpen } = useContext(CartContext);
+    const { isCartOpen } = useContext(CartContext);
 
     const signOuthandler = async () => {
         await signOutUser();
@@ -20,21 +20,21 @@ const Navigation = () => {
 
     return (
         <Fragment>
-            <nav className='navigation'>
-                <Link className='logo-container' to='/'>
+            <NavigationContainer>
+                <LogoContainer to='/'>
                     <CrwnLogo className='logo' />
-                </Link>
-                <div className='nav-links-container'>
-                    <Link className='nav-link' to='/shop'>SHOP</Link>
+                </LogoContainer>
+                <NavLinks>
+                    <NavLink to='/shop'>SHOP</NavLink>
                     {
                         currentUser ?
-                            (<Link className='nav-link' onClick={signOuthandler}>SIGN OUT</Link>) :
-                            (<Link className='nav-link' to='/auth'>SIGN IN</Link>)
+                            (<NavLink onClick={signOuthandler}>SIGN OUT</NavLink>) :
+                            (<NavLink to='/auth'>SIGN IN</NavLink>)
                     }
                     <CartIcon />
-                </div>
+                </NavLinks>
                 {isCartOpen && <CartDropdown />}
-            </nav>
+            </NavigationContainer>
             <Outlet />
         </Fragment>
     );

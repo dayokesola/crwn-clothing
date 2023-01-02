@@ -1,19 +1,19 @@
-import { useState } from 'react'; 
-import { signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.util';
-import Button from '../button/button.component';
+import { useState } from 'react';
+import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.util';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
-import './sign-in-form.styles.scss';
+import { SignInContainer, ButtonsContainer } from './sign-in-form.styles';
 
 const _signInForm = {
     email: '',
     password: ''
 };
- 
 
 
-const SignInForm = (props) => { 
+
+const SignInForm = (props) => {
     const [signInForm, setSignInForm] = useState(_signInForm);
-    const { email, password } = signInForm; 
+    const { email, password } = signInForm;
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -21,7 +21,7 @@ const SignInForm = (props) => {
     };
 
     const logGooglePopupUser = async () => {
-         await signInWithGooglePopup();  
+        await signInWithGooglePopup();
     };
 
     const handleSubmit = async (event) => {
@@ -31,7 +31,7 @@ const SignInForm = (props) => {
             return;
         }
         try {
-            await signInAuthUserWithEmailAndPassword(email, password); 
+            await signInAuthUserWithEmailAndPassword(email, password);
             setSignInForm(_signInForm);
         } catch (error) {
             switch (error.code) {
@@ -49,22 +49,35 @@ const SignInForm = (props) => {
     };
 
     return (
-        <div className='sign-in-container'>
+        <SignInContainer>
             <h2>I already have an account?</h2>
             <div>Sign in with your email and password</div>
             <form onSubmit={handleSubmit}>
-                <FormInput label='Email' required type='email' name='email'
-                    value={email} onChange={handleChange} />
-                <FormInput label='Password' required type='password' name='password'
-                    value={password} onChange={handleChange} />
-                <div className='buttons-container'>
-                    <Button buttonType='' type="submit">SIGN IN</Button>
-                    <Button buttonType='google' type="button" onClick={logGooglePopupUser}>
-                       GOOGLE SIGN IN
+                <FormInput
+                    label='Email'
+                    required
+                    type='email'
+                    name='email'
+                    value={email}
+                    onChange={handleChange} />
+                <FormInput
+                    label='Password'
+                    required
+                    type='password'
+                    name='password'
+                    value={password}
+                    onChange={handleChange} />
+                <ButtonsContainer>
+                    <Button type="submit">SIGN IN</Button>
+                    <Button
+                        buttonType={BUTTON_TYPE_CLASSES.google}
+                        type="button"
+                        onClick={logGooglePopupUser}>
+                        GOOGLE SIGN IN
                     </Button>
-                </div>
-            </form> 
-        </div>
+                </ButtonsContainer>
+            </form>
+        </SignInContainer>
     );
 };
 export default SignInForm;

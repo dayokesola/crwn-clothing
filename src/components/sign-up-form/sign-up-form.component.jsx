@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.util';
+import { createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.util';
 import Button from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
-import './sign-up-form.styles.scss';
+import { SignUpContainer } from './sign-up-form.styles';
 
 const _form = {
     displayName: '',
@@ -11,7 +11,7 @@ const _form = {
     confirmPassword: ''
 };
 
-const SignUpForm = (props) => { 
+const SignUpForm = (props) => {
     const [signUpForm, setSignUpForm] = useState(_form);
     const { displayName, email, password, confirmPassword } = signUpForm;
     const handleChange = (event) => {
@@ -26,7 +26,7 @@ const SignUpForm = (props) => {
         }
         try {
             await createAuthUserWithEmailAndPassword(email, password);
-            setSignUpForm(_form); 
+            setSignUpForm(_form);
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 alert(`${email} already in use`);
@@ -38,21 +38,45 @@ const SignUpForm = (props) => {
     };
 
     return (
-        <div className='sign-up-container'>
+        <SignUpContainer>
             <h2>I don't have an account</h2>
             <div>Sign un with your email and password</div>
             <form onSubmit={handleSubmit}>
-                <FormInput label='Display Name' required type='text' name='displayName'
-                    value={displayName} onChange={handleChange} />
-                <FormInput label='Email' required type='email' name='email'
-                    value={email} onChange={handleChange} />
-                <FormInput label='Password' required type='password' name='password'
-                    value={password} onChange={handleChange} />
-                <FormInput label='Confirm Password' required type='password' name='confirmPassword'
-                    value={confirmPassword} onChange={handleChange} />
-                <Button buttonType='' type="submit">SIGN UP</Button>
+                <FormInput
+                    label='Display Name'
+                    required
+                    type='text'
+                    name='displayName'
+                    value={displayName}
+                    onChange={handleChange} />
+
+                <FormInput
+                    label='Email'
+                    required
+                    type='email'
+                    name='email'
+                    value={email}
+                    onChange={handleChange} />
+
+                <FormInput
+                    label='Password'
+                    required
+                    type='password'
+                    name='password'
+                    value={password}
+                    onChange={handleChange} />
+
+                <FormInput
+                    label='Confirm Password'
+                    required
+                    type='password'
+                    name='confirmPassword'
+                    value={confirmPassword}
+                    onChange={handleChange} />
+
+                <Button type="submit">SIGN UP</Button>
             </form>
-        </div>
+        </SignUpContainer>
     );
 };
 export default SignUpForm;
